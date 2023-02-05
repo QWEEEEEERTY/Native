@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "546718984024",
+    "firebase_url": "https://socialnetjava-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "socialnetjava",
+    "storage_bucket": "socialnetjava.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:546718984024:android:d23c15b1f970092aae672d",
+        "android_client_info": {
+          "package_name": "com.example.myapplicationjava"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "546718984024-pbrvechg3a7diaou2sqi60qn77ilbf18.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyADzsRy3R1uUl_-l2AjnlnMf28jWMzpffI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "546718984024-pbrvechg3a7diaou2sqi60qn77ilbf18.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
