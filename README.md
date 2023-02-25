@@ -17,7 +17,6 @@ DONE:
 
 TO DO:
 
-- Add class Post  
 - Fragment to create and add posts to DB  
 - Show posts from DB
 - Save profile picture and data in a database  
