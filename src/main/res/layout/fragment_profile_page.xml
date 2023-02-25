@@ -30,7 +30,14 @@
                 android:text="Change profile picture"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="16dp" />
-
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Edit profile"
+                android:textColor="@color/black"
+                android:textSize="24sp"
+                android:layout_marginTop="16dp"
+                android:layout_gravity="center_horizontal"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -38,9 +45,9 @@
                 android:layout_marginTop="16dp">
 
                 <TextView
-                    android:layout_width="80dp"
+                    android:layout_width="120dp"
                     android:layout_height="wrap_content"
-                    android:text="Since:"
+                    android:text="Registered at"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
 
@@ -59,9 +66,9 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="80dp"
-                    android:layout_height="wrap_content"
-                    android:text="ID:"
+                    android:layout_width="120dp"
+                    android:layout_height="match_parent"
+                    android:text="ID"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
 
@@ -77,12 +84,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginBottom="16dp">
+                android:layout_marginBottom="20dp">
 
                 <TextView
-                    android:layout_width="80dp"
+                    android:layout_width="120dp"
                     android:layout_height="wrap_content"
-                    android:text="Email:"
+                    android:text="Email"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
 
@@ -102,9 +109,9 @@
 
 
                 <TextView
-                    android:layout_width="80dp"
+                    android:layout_width="130dp"
                     android:layout_height="wrap_content"
-                    android:text="Username:"
+                    android:text="Username"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
                 <EditText
@@ -125,9 +132,9 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="80dp"
+                    android:layout_width="130dp"
                     android:layout_height="wrap_content"
-                    android:text="Name:"
+                    android:text="Name"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
 
@@ -150,9 +157,9 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="80dp"
+                    android:layout_width="130dp"
                     android:layout_height="wrap_content"
-                    android:text="Surname:"
+                    android:text="Surname"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
 
@@ -174,9 +181,9 @@
             android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="80dp"
+                    android:layout_width="130dp"
                     android:layout_height="wrap_content"
-                    android:text="Phone:"
+                    android:text="Phone"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
 
@@ -195,13 +202,12 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginBottom="16dp">
+                android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="80dp"
+                    android:layout_width="123dp"
                     android:layout_height="wrap_content"
-                    android:text="Gender:"
+                    android:text="Gender"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
 
@@ -215,8 +221,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:gravity="center_horizontal">
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -226,20 +232,29 @@
                     android:textSize="16sp" />
 
                 <DatePicker
-                    android:id="@+id/datePicker"
+                    android:id="@+id/DOB"
                     android:layout_width="wrap_content"
-                    android:layout_height="80dp"
+                    android:layout_height="wrap_content"
                     android:datePickerMode="spinner"
                     android:calendarViewShown="false" />
             </LinearLayout>
-
+            <Button
+                android:id="@+id/save_changes_button"
+                android:layout_width="wrap_content"
+                android:backgroundTint="@color/purple_700"
+                android:layout_marginHorizontal="5dp"
+                android:layout_height="wrap_content"
+                android:text="Save Changes"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:layout_gravity="center_horizontal" />
             <TextView
                 android:id="@+id/password_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Reset password"
+                android:text="Change password"
                 android:textColor="@color/black"
-                android:textSize="16sp"
+                android:textSize="24sp"
                 android:layout_marginTop="16dp"
                 android:layout_gravity="center_horizontal"/>
 
@@ -250,6 +265,7 @@
 
 
                 <EditText
+                    android:id="@+id/current_password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Enter current password"
@@ -258,6 +274,7 @@
                     android:textSize="16sp"
                     tools:ignore="TouchTargetSizeCheck" />
                 <EditText
+                    android:id="@+id/new_password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="New password"
@@ -266,6 +283,7 @@
                     android:textSize="16sp"
                     tools:ignore="TouchTargetSizeCheck" />
                 <EditText
+                    android:id="@+id/confirm_password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Confirm password"
@@ -283,12 +301,12 @@
                 android:layout_marginBottom="70dp">
 
                 <Button
-                    android:id="@+id/save_changes_button"
+                    android:id="@+id/reset_password"
                     android:layout_width="0dp"
                     android:backgroundTint="@color/purple_700"
                     android:layout_marginHorizontal="5dp"
                     android:layout_height="wrap_content"
-                    android:text="Save Changes"
+                    android:text="Reset password"
                     android:textColor="@color/black"
                     android:textSize="16sp"
                     android:layout_weight="1"

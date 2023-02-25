@@ -1,9 +1,18 @@
 package com.example.myapplicationjava;
 
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
+
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.TimeZone;
 
 
 public class Message {
@@ -16,6 +25,8 @@ public class Message {
     public String getOwner() { return owner; }
 
     public String getTime() { return time; }
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public void setTime() { time = Time.setUserTime(time); }
 
     public Message(String sender, String owner, String content)
     {
@@ -25,9 +36,9 @@ public class Message {
     }
     public Message() {}
 
+
     public void pushMessage()
     {
-        //socialnetjava.child(this.email).setValue(this);
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Messages");
         //String userId = databaseReference.push().getKey();
         String id;
@@ -35,10 +46,8 @@ public class Message {
             id = sender+owner;
         else
             id = owner+sender;
-        Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String currentTime = dateFormat.format(calendar.getTime());
-        this.time = currentTime;
-        databaseReference.child(id).child(currentTime).setValue(this);
+        this.time = Time.getTime();
+        databaseReference.child(id).child(time).setValue(this);
     }
 }
+

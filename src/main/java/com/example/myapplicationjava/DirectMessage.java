@@ -1,7 +1,9 @@
 package com.example.myapplicationjava;
 
+import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -45,8 +47,6 @@ public class DirectMessage extends Fragment {
         messages = new ArrayList<Message>();
         loadMessages();
 
-        messages.add(new Message(me, "12345678", "Hello everyone"));
-        messages.add(new Message("12345678", me, "Hello everyone"));
         messageAdapter = new MessageAdapter(getActivity(), messages, me);
         listView = fragment.findViewById(R.id.direct_message);
         listView.setAdapter(messageAdapter);
@@ -64,6 +64,7 @@ public class DirectMessage extends Fragment {
         return fragment;
     }
 
+
     private void loadMessages(){
         String messageId;
         if(me.compareTo(partnerId) < 0)
@@ -74,6 +75,7 @@ public class DirectMessage extends Fragment {
         DatabaseReference usersReference = database.getReference("Messages").child(messageId);
         usersReference.addValueEventListener(new ValueEventListener()
         {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onDataChange(DataSnapshot dataSnapshot)
             {
@@ -81,6 +83,7 @@ public class DirectMessage extends Fragment {
                 for (DataSnapshot userSnapshot : dataSnapshot.getChildren())
                 {
                     Message message = userSnapshot.getValue(Message.class);
+                    message.setTime();
                     messages.add(message);
                 }
                 messageAdapter.notifyDataSetChanged();
@@ -94,3 +97,37 @@ public class DirectMessage extends Fragment {
     }
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

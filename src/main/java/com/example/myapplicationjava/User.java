@@ -9,11 +9,8 @@ import com.google.firebase.database.DatabaseError;
 import androidx.annotation.NonNull;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-
-import android.content.Intent;
-import android.text.TextUtils;
 import android.util.Log;
-import android.widget.Toast;
+
 
 import com.google.firebase.database.ValueEventListener;
 
@@ -22,7 +19,20 @@ import java.util.Calendar;
 
 
 public class User {
-    private String id, username, email, password, registrationTime, gender;
+    private String id;
+    private String username;
+    private String email;
+    private String password = "Google";
+    private String registrationTime;
+    private String gender;
+    private String name;
+    private String surname;
+    private String phone;
+    private String birthday;
+
+
+
+
 
     public String getId() { return id; }
     public String getUsername() { return username; }
@@ -30,6 +40,36 @@ public class User {
     public String getPassword() { return password; }
     public String getRegistrationTime() { return registrationTime; }
     public String getGender() { return gender; }
+    public String getName() { return name; }
+    public String getSurname() { return surname; }
+    public String getPhone() { return phone; }
+    public String getBirthday() { return birthday; }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+    public void setBirthday(String birthday) {
+        this.birthday = birthday;
+    }
+    public void setPassword(String password){
+        this.password = password;
+    }
 
     public User(String username, String email, String password)
     {
@@ -42,22 +82,44 @@ public class User {
         this.username = username;
         this.email = email;
     }
+
+    public User(String email) {
+        this.email = email;
+    }
+    private void copyUser(User other){
+        id = other.id;
+        email = other.email;
+        username = other.username;
+        registrationTime = other.registrationTime;
+        password = other.password;
+        gender = other.gender;
+        name = other.name;
+        surname = other.surname;
+        phone = other.phone;
+        birthday = other.birthday;
+    }
+
     public User() { }
 
-    public void PushUser()
+    public void pushUser()
     {
         //socialnetjava.child(this.email).setValue(this);
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users");
-        String userId = databaseReference.push().getKey();
-        Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String currentTime = dateFormat.format(calendar.getTime());
-        this.id = userId;
-        this.registrationTime = currentTime;
-        databaseReference.child(userId).setValue(this);
+        if(this.id == null)
+        {
+            Calendar calendar = Calendar.getInstance();
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            String currentTime = dateFormat.format(calendar.getTime());
+            String userId = databaseReference.push().getKey();
+            this.id = userId;
+            this.registrationTime = currentTime;
+
+        }
+        databaseReference.child(this.id).setValue(this);
     }
 
-    public void checkEmailExists(OnCompleteListener<Void> listener)
+
+    public void getUserByEmail(OnCompleteListener<Void> listener)
     {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference usersRef = database.getReference("Users");
@@ -66,20 +128,15 @@ public class User {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot)
             {
-                boolean isUserExists = false;
                 for (DataSnapshot userSnapshot : dataSnapshot.getChildren())
                 {
-                    User user = userSnapshot.getValue(User.class);
-                    if ( user.getEmail().equals(email) )
+                    User userFromDb = userSnapshot.getValue(User.class);
+                    if ( userFromDb.getEmail().equals(email) )
                     {
-                        id = user.getId();
-                        isUserExists = true;
+                        copyUser(userFromDb);
                         break;
                     }
                 }
-                if (!isUserExists)
-                    PushUser();
-
                 Task<Void> task = Tasks.forResult(null);
                 listener.onComplete(task);
             }
@@ -87,7 +144,6 @@ public class User {
             public void onCancelled(@NonNull DatabaseError databaseError)
             {
                 Log.e("LoginActivity", "Error while checking username and password", databaseError.toException());
-                // Call the listener to notify that the operation is completed with an error
             }
         });
     }
@@ -102,17 +158,10 @@ public class User {
             {
                 for (DataSnapshot userSnapshot : dataSnapshot.getChildren())
                 {
-
                     if ( userSnapshot.getKey().equals(searchId) )
                     {
-                        User user = userSnapshot.getValue(User.class);
-                        id = searchId;
-                        username = user.getUsername();
-                        email = user.getEmail();
-                        registrationTime = user.getRegistrationTime();
-                        if(user.getPassword() != null){
-                            password = user.getPassword();
-                        }
+                        User userFromDb = userSnapshot.getValue(User.class);
+                        copyUser(userFromDb);
                         break;
                     }
                 }
@@ -127,3 +176,4 @@ public class User {
         });
     }
 }
+
