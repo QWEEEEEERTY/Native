@@ -13,6 +13,12 @@
         <item>Chinese</item>
     </string-array>
 
+    <string-array name="spinner_gender">
+        <item>Not set</item>
+        <item>Male</item>
+        <item>Female</item>
+    </string-array>
+
     <string name="title_activity_login_page">LoginActivityPage</string>
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>

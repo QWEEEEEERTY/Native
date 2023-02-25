@@ -41,7 +41,9 @@
         android:id="@+id/direct_message"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/direct_user" />
+        android:layout_below="@id/direct_user"
+        android:divider="@null"
+        />
 
 </RelativeLayout>
 

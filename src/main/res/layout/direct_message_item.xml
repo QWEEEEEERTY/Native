@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingHorizontal="8dp"
+    android:paddingVertical="4dp"
     android:layout_gravity="start">
 
     <LinearLayout
@@ -17,8 +18,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="start"
             android:maxWidth="120pt"
-            android:padding="8dp"
-            android:textSize="20sp"
+            android:paddingHorizontal="8dp"
+            android:textSize="16sp"
+            android:background="@color/lavender"
             android:text="Hello, how are you doing today?" />
 
         <TextView

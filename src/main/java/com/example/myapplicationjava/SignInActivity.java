@@ -42,7 +42,11 @@ public class SignInActivity extends AppCompatActivity{
             email = findViewById(R.id.email_login);
             String emailText = email.getText().toString();
             String passwordText = password.getText().toString();
-            checkEmailPassword(emailText, passwordText);
+            if(passwordText.length()>=8)
+                checkEmailPassword(emailText, passwordText);
+            else
+                Toast.makeText(SignInActivity.this, "Password must contain at least 8 symbols", Toast.LENGTH_SHORT).show();
+
         });
 
         googleButton = findViewById(R.id.sign_in_google);
@@ -66,10 +70,11 @@ public class SignInActivity extends AppCompatActivity{
             {
                 String userId, username;
                 boolean isDataMatch = false;
+
                 for (DataSnapshot userSnapshot : dataSnapshot.getChildren())
                 {
                     User user = userSnapshot.getValue(User.class);
-                    if (user.getEmail().equals(emailText) && user.getPassword().equals(passwordText))
+                    if ( user.getEmail().equals(emailText) && user.getPassword().equals(passwordText) )
                     {
                         isDataMatch = true;
                         userId = user.getId();
@@ -81,6 +86,7 @@ public class SignInActivity extends AppCompatActivity{
                         break;
                     }
                 }
+
                 if( !isDataMatch )
                     Toast.makeText(SignInActivity.this, "Incorrect username or password", Toast.LENGTH_SHORT).show();
             }
@@ -125,5 +131,6 @@ public class SignInActivity extends AppCompatActivity{
     {
         Intent intent = new Intent(SignInActivity.this, SignUpActivity.class);
         startActivity(intent);
+        finish();
     }
 }

@@ -1,5 +1,6 @@
 package com.example.myapplicationjava;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.widget.Button;
 import android.content.Intent;
@@ -13,7 +14,9 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
-
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 
 public class SignUpActivity extends AppCompatActivity {
@@ -27,6 +30,17 @@ public class SignUpActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
+        //notification
+        FirebaseMessaging.getInstance().subscribeToTopic("web_app").addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        String msg = "Done";
+                        if (!task.isSuccessful()) {
+                            msg = "Failed";
+                        }
+
+                    }
+                });
 
         registerButton = findViewById(R.id.register_btn);
         registerButton.setOnClickListener(v ->
@@ -35,7 +49,12 @@ public class SignUpActivity extends AppCompatActivity {
             password = findViewById(R.id.create_password);
             username = findViewById(R.id.register_username);
             confirm = findViewById(R.id.confirm_password);
-            if(isValidSignUp(username.getText().toString(), emailfield.getText().toString(), password.getText().toString(), confirm.getText().toString())==null)
+            String signUpError = isValidSignUp(username.getText().toString(), emailfield.getText().toString(), password.getText().toString(), confirm.getText().toString());
+            if( signUpError!=null)
+            {
+                Toast.makeText(SignUpActivity.this, signUpError, Toast.LENGTH_LONG).show();
+            }
+            else
             {
                 User user = new User(username.getText().toString(), emailfield.getText().toString(), password.getText().toString());
                 user.checkEmailExists(task ->
@@ -50,9 +69,6 @@ public class SignUpActivity extends AppCompatActivity {
                     else
                         Toast.makeText(SignUpActivity.this, task.getException().toString(), Toast.LENGTH_LONG).show();
                 });
-            }
-            else{
-                Toast.makeText(SignUpActivity.this, "Usernames must contain at least 5 symbols", Toast.LENGTH_LONG).show();
             }
         });
         
@@ -113,5 +129,6 @@ public class SignUpActivity extends AppCompatActivity {
     {
         Intent intent = new Intent(SignUpActivity.this, SignInActivity.class);
         startActivity(intent);
+        finish();
     }
 }

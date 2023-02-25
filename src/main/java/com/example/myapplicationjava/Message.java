@@ -36,7 +36,7 @@ public class Message {
         else
             id = owner+sender;
         Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String currentTime = dateFormat.format(calendar.getTime());
         this.time = currentTime;
         databaseReference.child(id).child(currentTime).setValue(this);
