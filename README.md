@@ -13,6 +13,7 @@ DONE:
 - Online messaging  
 - Animated transitions  
 - Set profile picture, edit profile data  
+- App Settings
 
 TO DO:
 
