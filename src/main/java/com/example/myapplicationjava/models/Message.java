@@ -1,18 +1,12 @@
-package com.example.myapplicationjava;
+package com.example.myapplicationjava.models;
 
 import android.os.Build;
 
 import androidx.annotation.RequiresApi;
 
+import com.example.myapplicationjava.models.Time;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Calendar;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.TimeZone;
 
 
 public class Message {
@@ -46,8 +40,8 @@ public class Message {
             id = sender+owner;
         else
             id = owner+sender;
-        this.time = Time.getTime();
-        databaseReference.child(id).child(time).setValue(this);
+        this.time = Time.getCurrentTime();
+        databaseReference.child(id+"/"+time).child("").setValue(this);
     }
 }
 

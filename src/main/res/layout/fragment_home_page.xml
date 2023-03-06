@@ -3,224 +3,32 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".HomePage">
+    tools:context=".fragments.HomePage">
 
-
-    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/welcome"
+            android:text="Goodye"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/welcome"
-                android:text="Goodye"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/black"
-                android:textSize="20sp"
-                android:layout_gravity="center"
-                android:layout_marginTop="13dp"/>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_margin="16dp"
-                android:paddingBottom="5dp"
-                android:background="@color/purple_700">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="16dp">
-
-                    <ImageView
-                        android:id="@+id/profile_picture"
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:src="@drawable/baseline_account_circle_24" />
-
-                    <TextView
-                        android:id="@+id/username"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Username"
-                        android:textColor="@color/black"
-                        android:textSize="16sp"
-                        android:layout_marginStart="8dp"
-                        android:layout_gravity="center_vertical" />
-                </LinearLayout>
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:layout_gravity="center"
+            android:layout_marginTop="13dp"/>
 
 
+        <!-- Repeat the same LinearLayout for two more posts -->
+        <ListView
+            android:id="@+id/list_view_posts"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </ListView>
+    </LinearLayout>
 
-                <TextView
-                    android:id="@+id/post_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Topic"
-                    android:textColor="@color/black"
-                    android:textSize="20sp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginEnd="16dp" />
-
-                <ImageView
-                    android:id="@+id/post_picture"
-                    android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    android:src="@drawable/img" />
-
-                <TextView
-                    android:id="@+id/topic"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
-                    android:textColor="@color/black"
-                    android:textSize="16sp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginEnd="16dp" />
-
-            </LinearLayout>
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_margin="16dp"
-                android:paddingBottom="5dp"
-                android:background="@color/purple_500">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="16dp">
-
-                    <ImageView
-                        android:id="@+id/profile_picture2"
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:src="@drawable/baseline_account_circle_24" />
-
-                    <TextView
-                        android:id="@+id/username2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Username"
-                        android:textColor="@color/black"
-                        android:textSize="16sp"
-                        android:layout_marginStart="8dp"
-                        android:layout_gravity="center_vertical" />
-                </LinearLayout>
-
-
-
-                <TextView
-                    android:id="@+id/post_text2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Topic"
-                    android:textColor="@color/black"
-                    android:textSize="20sp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginEnd="16dp" />
-
-                <ImageView
-                    android:id="@+id/post_picture2"
-                    android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    android:src="@drawable/img" />
-
-                <TextView
-                    android:id="@+id/topic2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
-                    android:textColor="@color/black"
-                    android:textSize="16sp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginEnd="16dp" />
-
-            </LinearLayout>
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_margin="16dp"
-                android:paddingBottom="5dp"
-                android:background="@color/purple_200">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="16dp">
-
-                    <ImageView
-                        android:id="@+id/profile_picture3"
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:src="@drawable/baseline_account_circle_24" />
-
-                    <TextView
-                        android:id="@+id/username3"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Username"
-                        android:textColor="@color/black"
-                        android:textSize="16sp"
-                        android:layout_marginStart="8dp"
-                        android:layout_gravity="center_vertical" />
-                </LinearLayout>
-
-
-
-                <TextView
-                    android:id="@+id/post_text3"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Topic"
-                    android:textColor="@color/black"
-                    android:textSize="20sp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginEnd="16dp" />
-
-                <ImageView
-                    android:id="@+id/post_picture3"
-                    android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    android:src="@drawable/img" />
-
-                <TextView
-                    android:id="@+id/topic3"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
-                    android:textColor="@color/black"
-                    android:textSize="16sp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginEnd="16dp" />
-
-            </LinearLayout>
-
-            <!-- Repeat the same LinearLayout for two more posts -->
-
-        </LinearLayout>
-
-    </ScrollView>
 
     <ImageButton
         android:id="@+id/fixed_button"

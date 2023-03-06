@@ -1,9 +1,10 @@
-package com.example.myapplicationjava;
+package com.example.myapplicationjava.fragments;
 
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
+import android.app.Activity;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,14 +18,23 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.myapplicationjava.R;
+import com.example.myapplicationjava.models.Firebase;
+import com.example.myapplicationjava.models.Time;
+import com.example.myapplicationjava.models.User;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
+
 
 public class ProfilePage extends Fragment {
     private View fragment;
     private User user;
     private ImageView profileImg;
-    private TextView since, id, email;
+    private TextView since, email;
     private EditText  username, name, surname, phone, currentPassword, newPassword, confirmPassword;
     private Spinner gender;
+    private Button changePictureButton;
     private DatePicker birthday;
 
 
@@ -32,9 +42,13 @@ public class ProfilePage extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         fragment = inflater.inflate(R.layout.fragment_profile_page, container, false);
-        String me = getActivity().getIntent().getStringExtra("UserId");
+        String currentUserId = getActivity().getIntent().getStringExtra("UserId");
         this.init(fragment);
-        this.loadUserProfile(me);
+        Firebase.copyObject("Users/"+currentUserId, User.class, task ->
+        {
+            user = task.getResult();
+            this.showUserProfile();
+        });
         this.saveProfileListener();
         this.resetPasswordListener();
         this.setImageListener();
@@ -44,16 +58,29 @@ public class ProfilePage extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data)
     {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 100) {
+        if (requestCode == 100 && resultCode == Activity.RESULT_OK && data != null && data.getData() != null) {
             Uri uri = data.getData();
             profileImg.setImageURI(uri);
             // Do something with the chosen image
+            StorageReference storageRef = FirebaseStorage.getInstance().getReference();
+            StorageReference imageRef = storageRef.child("images/" + uri.getLastPathSegment());
+            // Upload the image to Firebase Storage
+            imageRef.putFile(uri).addOnSuccessListener(taskSnapshot -> {
+                // Get the download URL of the uploaded image
+                imageRef.getDownloadUrl().addOnSuccessListener(downloadUrl -> {
+                    user.setImageUrl(downloadUrl.toString());
+                    Firebase.pushObject("Users/"+user.getId(), user);
+                    Toast.makeText(getContext(), "Profile image have been saved", Toast.LENGTH_LONG).show();
+                });
+            });
         }
     }
     private void init(View fragment)
     {
+        user = new User();
+        profileImg = fragment.findViewById(R.id.profile_picture);
+        changePictureButton = fragment.findViewById(R.id.change_picture_button);
         since = fragment.findViewById(R.id.registration_date);
-        id = fragment.findViewById(R.id.user_id);
         email = fragment.findViewById(R.id.user_email);
         username = fragment.findViewById(R.id.username);
         name = fragment.findViewById(R.id.name);
@@ -80,7 +107,7 @@ public class ProfilePage extends Fragment {
                     birthday.getMonth(),
                     birthday.getDayOfMonth()
             ));
-            user.pushUser();
+            Firebase.pushObject("Users/"+user.getId(), user);
             Toast.makeText(getContext(), "Changes have been saved", Toast.LENGTH_LONG).show();
         });
     }
@@ -103,7 +130,7 @@ public class ProfilePage extends Fragment {
             }
             else {
                 user.setPassword(newPassword.getText().toString());
-                user.pushUser();
+                Firebase.pushObject("Users/"+user.getId(), user);
                 Toast.makeText(getContext(), "Password was changed successfully", Toast.LENGTH_LONG).show();
             }
         });
@@ -111,8 +138,6 @@ public class ProfilePage extends Fragment {
 
     private void setImageListener()
     {
-        profileImg = fragment.findViewById(R.id.profile_picture);
-        Button changePictureButton = fragment.findViewById(R.id.change_picture_button);
         changePictureButton.setOnClickListener(v -> {
             Intent intent = new Intent();
             intent.setType("image/*");
@@ -120,27 +145,21 @@ public class ProfilePage extends Fragment {
             startActivityForResult(Intent.createChooser(intent, "Title"), 100);
         });
     }
-    private void loadUserProfile(String searchId)
-     {
-        user.getUserById(task ->
-        {
-            if (task.isSuccessful())
-            {
-                since.setText(user.getRegistrationTime());
-                id.setText(user.getId());
-                email.setText(user.getEmail());
-                username.setText(user.getUsername());
-                name.setText(user.getName());
-                surname.setText(user.getSurname());
-                phone.setText(user.getPhone());
-                ArrayAdapter<String> adapter = (ArrayAdapter<String>) gender.getAdapter();
-                int position = adapter.getPosition(user.getGender());
-                gender.setSelection(position);
-                if ( user.getBirthday() != null){
-                    int[] date = Time.formatForPicker(user.getBirthday());
-                    birthday.init(date[0], date[1], date[2], null);
-                }
-            }
-        }, searchId);
+    private void showUserProfile()
+    {
+        since.setText(user.getRegistrationTime());
+        email.setText(user.getEmail());
+        username.setText(user.getUsername());
+        name.setText(user.getName());
+        surname.setText(user.getSurname());
+        phone.setText(user.getPhone());
+        Picasso.get().load(user.getImageUrl()).into(profileImg);
+        ArrayAdapter<String> adapter = (ArrayAdapter<String>) gender.getAdapter();
+        int position = adapter.getPosition(user.getGender());
+        gender.setSelection(position);
+        if ( user.getBirthday() != null){
+            int[] date = Time.formatForPicker(user.getBirthday());
+            birthday.init(date[0], date[1], date[2], null);
+        }
     }
 }

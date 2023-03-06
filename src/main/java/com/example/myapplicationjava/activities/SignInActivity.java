@@ -1,4 +1,4 @@
-package com.example.myapplicationjava;
+package com.example.myapplicationjava.activities;
 
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,6 +9,9 @@ import android.widget.EditText;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.myapplicationjava.R;
+import com.example.myapplicationjava.models.Firebase;
+import com.example.myapplicationjava.models.User;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -17,17 +20,23 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 
 
 public class SignInActivity extends AppCompatActivity{
-    Button loginButton;
-    com.google.android.gms.common.SignInButton googleButton;
-    String password, email;
-    GoogleSignInOptions gso;
-    GoogleSignInClient gsc;
+    private Button loginButton;
+    private User user;
+    private com.google.android.gms.common.SignInButton googleButton;
+    private String password, email;
+    private GoogleSignInOptions gso;
+    private GoogleSignInClient gsc;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
+        this.loginClickListener();
+        this.googleClickListener();
+    }
 
+    private void loginClickListener()
+    {
         loginButton = findViewById(R.id.login_btn);
         loginButton.setOnClickListener(v ->
         {
@@ -37,34 +46,35 @@ public class SignInActivity extends AppCompatActivity{
             if(!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches())
             {
                 Toast.makeText(SignInActivity.this, "Please enter valid email", Toast.LENGTH_SHORT).show();
-
+                return;
             }
-            else if (password.length()<8)
+            if (password.length()<8)
             {
                 Toast.makeText(SignInActivity.this, "Password must contain at least 8 symbols", Toast.LENGTH_SHORT).show();
+                return;
             }
-            else
+            Firebase.copyObject("Users/"+user.getId(), User.class, task ->
             {
-                User user = new User(email);
-                user.getUserByEmail(task ->
+                if(task.getResult() == null)
                 {
-                    if (task.isSuccessful() && user.getPassword().equals(password))
-                    {
-                        Intent intent = new Intent(SignInActivity.this, MainActivity.class);
-                        intent.putExtra("UserId", user.getId());
-                        intent.putExtra("Username", user.getUsername());
-                        startActivity(intent);
-                        finish();
-                    }
-                    else
-                    {
-                        Toast.makeText(SignInActivity.this, task.getException().toString(), Toast.LENGTH_LONG).show();
-                    }
-                });
-            }
+                    Toast.makeText(SignInActivity.this, "The user is not registered", Toast.LENGTH_SHORT).show();
+                }
+                else if (task.getResult().getPassword().equals(password))
+                {
+                    user = task.getResult();
+                    enter();
+                }
+                else
+                {
+                    Toast.makeText(SignInActivity.this, "Wrong password", Toast.LENGTH_SHORT).show();
+                }
+            });
 
         });
+    }
 
+    private void googleClickListener()
+    {
         googleButton = findViewById(R.id.sign_in_google);
         googleButton.setOnClickListener(v ->
         {
@@ -82,23 +92,31 @@ public class SignInActivity extends AppCompatActivity{
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 123)
         {
-                GoogleSignInAccount account = GoogleSignIn.getSignedInAccountFromIntent(data).getResult();
-                User user = new User(account.getDisplayName(), account.getEmail());
-                user.getUserByEmail(task ->
+            GoogleSignInAccount account = GoogleSignIn.getSignedInAccountFromIntent(data).getResult();
+            user = new User(account.getDisplayName(), account.getEmail());
+            Firebase.copyObject("Users/"+user.getId(), User.class, task ->
+            {
+                if(task.getResult() == null)
                 {
-                    if (task.isSuccessful())
-                    {
-                        Intent intent = new Intent(SignInActivity.this, MainActivity.class);
-                        intent.putExtra("UserId", user.getId());
-                        intent.putExtra("Username", user.getUsername());
-                        startActivity(intent);
-                        finish();
-                    }
-                    else
-                        Toast.makeText(SignInActivity.this, task.getException().toString(), Toast.LENGTH_LONG).show();
-                });
+                    Firebase.pushObject("Users/"+user.getId(), user);
+                }
+                else
+                {
+                    user = task.getResult();
+                }
+                enter();
+            });
         }
     }
+
+    private void enter(){
+        Intent intent = new Intent(SignInActivity.this, MainActivity.class);
+        intent.putExtra("UserId", user.getId());
+        intent.putExtra("Username", user.getUsername());
+        startActivity(intent);
+        finish();
+    }
+
     public void signUpNow(View view)
     {
         Intent intent = new Intent(SignInActivity.this, SignUpActivity.class);

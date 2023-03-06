@@ -1,4 +1,4 @@
-package com.example.myapplicationjava;
+package com.example.myapplicationjava.models;
 
 import android.os.Build;
 import android.widget.DatePicker;
@@ -35,7 +35,7 @@ public class Time {
         return new int[] {year, month, day};
     }
 
-    public static String getTime(){
+    public static String getCurrentTime(){
         Date date = new Date();
         date.setTime(date.getTime() - TimeZone.getDefault().getRawOffset());
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
